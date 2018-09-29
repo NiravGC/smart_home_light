@@ -11,7 +11,11 @@ import os
 from flask import Flask
 from flask_ask import Ask, request, session, question, statement
 import RPi.GPIO as GPIO
- 
+
+app = Flask(__name__)
+ask = Ask(app, "/")
+logging.getLogger('flask_ask').setLevel(logging.DEBUG)
+
 # Import the WS2801 module.
 import Adafruit_WS2801
 import Adafruit_GPIO.SPI as SPI
