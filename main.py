@@ -41,9 +41,9 @@ def single_colour(first, last, r, g, b):
 
 # select first and last pixels in section
 locationdict = {
-  "left": [0, 24],
-  "middle": [24, 75],
-  "bar": [75, PIXEL_COUNT],
+  "left": [0, 8],
+  "middle": [8, 16],
+  "bar": [16, PIXEL_COUNT],
   "living room": [0, PIXEL_COUNT]
 }
 
@@ -68,33 +68,51 @@ colourdict = {
   
 @ask.launch
 def launch():
-    speech_text = 'Novello Smart Lightning Online'
+    speech_text = 'Novello Smart Lighting Online'
     return question(speech_text).reprompt(speech_text).simple_card(speech_text)
 
- @ask.intent('SetColourIntent', default = {'Location':'Living Room'})
- def SetColourIntent(Location, Colour):
-    if str(Location) in locationdict and str(Colour) in colourdict:
-      rvalue = colourdict[str(Colour)][0]
-      gvalue = colourdict[str(Colour)][1]
-      bvalue = colourdict[str(Colour)][2]
-      firstpixel = locationdict[str(Location)][0]
-      lastpixel = locationdict[str(Location)][1]
+# amazon intent for changing specific section to a given colour
+@ask.intent('SetColourIntent', default = {'Location':'Living Room'})
+def SetColourIntent(Location, Colour):
+    if Location in locationdict and Colour in colourdict:
+      rvalue = colourdict[Colour][0]
+      gvalue = colourdict[Colour][1]
+      bvalue = colourdict[Colour][2]
+      firstpixel = locationdict[Location][0]
+      lastpixel = locationdict[Location][1]
       single_colour(firstpixel, lastpixel, rvalue, gvalue, bvalue)
       return statement('setting {} lights to {}'.format(Location, Colour))
-    elif str(Location) not in locationdict:
+    elif Location not in locationdict:
       return statement('I dont know which lights you want changed.')
     else:
       return statement('I do not have that colour saved.')
     
 @ask.intent('ClearIntent', default = {'Location':'Living Room'})
- def ClearIntent(Location):
-    if str(Location) in locationdict:
-      firstpixel = locationdict[str(Location)][0]
-      lastpixel = locationdict[str(Location)][1]
+def ClearIntent(Location):
+    if Location in locationdict:
+      firstpixel = locationdict[Location][0]
+      lastpixel = locationdict[Location][1]
       for i in range(firstpixel, lastpixel):
         pixels.set_pixel(0)
       pixels.show()
       return statement('Turning off {} lights'.format(Location))
     else:
       return statement('I do not know which lights you want changed.')
-  
+
+@ask.intent('AMAZON.HelpIntent')
+def help():
+    speech_text = 'You can say hello to me!'
+    return question(speech_text).reprompt(speech_text).simple_card('HelloWorld', speech_text)
+
+@ask.session_ended
+def session_ended():
+    return "{}", 200
+
+ 
+# run mainloop 
+if __name__ == '__main__':
+    if 'ASK_VERIFY_REQUESTS' in os.environ:
+        verify = str(os.environ.get('ASK_VERIFY_REQUESTS', '')).lower()
+        if verify == 'false':
+            app.config['ASK_VERIFY_REQUESTS'] = False
+    app.run(debug=True)
