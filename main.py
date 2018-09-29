@@ -97,7 +97,7 @@ def ClearIntent(Location):
       firstpixel = locationdict[Location][0]
       lastpixel = locationdict[Location][1]
       for i in range(firstpixel, lastpixel):
-        pixels.set_pixel(0)
+        pixels.set_pixel(i, 0)
       pixels.show()
       return statement('Turning off {} lights'.format(Location))
     else:
