@@ -45,9 +45,9 @@ def single_colour(first, last, r, g, b):
 
 # select first and last pixels in section
 locationdict = {
-  "left": [0, 25],
-  "middle": [25, 76],
-  "bar": [76, PIXEL_COUNT],
+  "left": [0, 24],
+  "middle": [24, 74],
+  "bar": [74, PIXEL_COUNT],
   "living room": [0, PIXEL_COUNT]
 }
 
@@ -80,8 +80,8 @@ def launch():
 def SetColourIntent(Location, Colour):
     if Location in locationdict and Colour in colourdict:
       rvalue = colourdict[Colour][0]
-      gvalue = colourdict[Colour][1]
-      bvalue = colourdict[Colour][2]
+      gvalue = colourdict[Colour][2]          # has become RBG for some reason? This fixes
+      bvalue = colourdict[Colour][1]
       firstpixel = locationdict[Location][0]
       lastpixel = locationdict[Location][1]
       single_colour(firstpixel, lastpixel, rvalue, gvalue, bvalue)
