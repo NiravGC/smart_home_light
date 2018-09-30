@@ -21,7 +21,7 @@ import Adafruit_WS2801
 import Adafruit_GPIO.SPI as SPI
 
 # Number of LEDs in strip:
-PIXEL_COUNT = 24
+PIXEL_COUNT = 133
 
 # Specify a hardware SPI connection on /dev/spidev0.0:
 SPI_PORT   = 0
@@ -45,9 +45,9 @@ def single_colour(first, last, r, g, b):
 
 # select first and last pixels in section
 locationdict = {
-  "left": [0, 8],
-  "middle": [8, 16],
-  "bar": [16, PIXEL_COUNT],
+  "left": [0, 25],
+  "middle": [25, 76],
+  "bar": [76, PIXEL_COUNT],
   "living room": [0, PIXEL_COUNT]
 }
 
