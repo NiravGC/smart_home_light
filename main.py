@@ -23,6 +23,11 @@ import Adafruit_GPIO.SPI as SPI
 # Number of LEDs in strip:
 PIXEL_COUNT = 133
 
+# Currently assigned colour
+LEFT_COLOUR = "white"
+MIDDLE_COLOUR = "white"
+BAR_COLOUR = "white"
+
 # Specify a hardware SPI connection on /dev/spidev0.0:
 SPI_PORT   = 0
 SPI_DEVICE = 0
@@ -58,11 +63,12 @@ colourdict = {
   "blue": [0, 0, 255],
   "orange": [255, 110, 0],
   "yellow": [255, 255, 0],
-  "dark green": [50, 160, 0],
+  "forest": [50, 160, 0],
   "teal": [20, 160, 150],
   "light blue": [0, 255, 255],
   "purple": [150, 0, 255],
   "pink": [255, 0, 255],
+  "white": [255, 255, 255],
 }
 
 
@@ -85,9 +91,17 @@ def SetColourIntent(Location, Colour):
       firstpixel = locationdict[Location][0]
       lastpixel = locationdict[Location][1]
       single_colour(firstpixel, lastpixel, rvalue, gvalue, bvalue)
-      return statement('setting {} lights to {}'.format(Location, Colour))
+      if Location == "left":
+        LEFT_COLOUR = Colour
+      elif Location == "middle":
+        MIDDLE_COLOUR = Colour
+      elif Location == "bar":
+        BAR_COLOUR = Colour
+      else:
+        LEFT_COLOUR = MIDDLE_COLOUR = BAR_COLOUR = Colour
+      return statement('colouring {} lights {}'.format(Location, Colour))
     elif Location not in locationdict:
-      return statement('I dont know which lights you want changed.')
+      return statement('I do not know which lights you want changed.')
     else:
       return statement('I do not have that colour saved.')
     
@@ -102,6 +116,17 @@ def ClearIntent(Location):
       return statement('Turning off {} lights'.format(Location))
     else:
       return statement('I do not know which lights you want changed.')
+    
+@ask.intent('DimIntent', default = {'Location':'Living Room'})
+def DimIntent(Location, Value):
+  if Location in locationdict:
+    firstpixel = locationdict[Location][0]
+    lastpixel = locationdict[Location][1]
+    for i in range(firstpixel, lastpixel):
+      r, g, b = pixels.getpixel_rgb(i)
+      rvalue = r/2
+      gvalue = g/2
+      bvalue = b/2
 
 @ask.intent('AMAZON.HelpIntent')
 def help():
