@@ -122,8 +122,8 @@ def DimIntent(Location, Value):
   if Location in locationdict:
     firstpixel = locationdict[Location][0]
     lastpixel = locationdict[Location][1]
-    for i in range(firstpixel, lastpixel):
-      r, g, b = pixels.getpixel_rgb(i)
+    if Location = "left":
+      r,g,b = colourdict[LEFT_COLOUR][0], colourdict[LEFT_COLOUR][2], colourdict[LEFT_COLOUR][1]  # take colour values
       rvalue = r/2
       gvalue = g/2
       bvalue = b/2
