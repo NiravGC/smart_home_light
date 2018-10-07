@@ -133,6 +133,7 @@ def ClearIntent(Location):
 @ask.intent('DimIntent', default = {'Location':'Living Room'})
 def DimIntent(Location, Value):
     if Location in locationdict and 0 < int(Value) <= 100:
+      rvalue = gvalue = bvalue = 255  # create & reset rgb modifiers
       if Location == "left":
         firstpixel = locationdict[Location][0]
         lastpixel = locationdict[Location][1]
