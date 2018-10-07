@@ -131,7 +131,7 @@ def ClearIntent(Location):
 # amazon intent for dimming specific lights
 @ask.intent('DimIntent', default = {'Location':'Living Room'})
 def DimIntent(Location, Value):
-    if Location in locationdict and Value in range(1,101):
+    if Location in locationdict and 0 < Value <= 100:
       if Location == "left":
         firstpixel = locationdict[Location][0]
         lastpixel = locationdict[Location][1]
