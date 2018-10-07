@@ -45,10 +45,11 @@ def single_colour(first, last, r, g, b):
     
 # Get values for dimming
 def dimvalues(lcn, amt):
+      val = int(amt)
       r,g,b = colourdict[lcn][0], colourdict[lcn][2], colourdict[lcn][1]  # take colour values - again accounting for the rbg change
-      rvalue = r*amt/100  # adjust by % based on given value 1-100
-      gvalue = g*amt/100
-      bvalue = b*amt/100
+      rvalue = r*val/100  # adjust by % based on given value 1-100
+      gvalue = g*val/100
+      bvalue = b*val/100
       return rvalue, gvalue, bvalue
     
 # ================================ #
@@ -131,7 +132,7 @@ def ClearIntent(Location):
 # amazon intent for dimming specific lights
 @ask.intent('DimIntent', default = {'Location':'Living Room'})
 def DimIntent(Location, Value):
-    if Location in locationdict and 0 < Value <= 100:
+    if Location in locationdict and 0 < int(Value) <= 100:
       if Location == "left":
         firstpixel = locationdict[Location][0]
         lastpixel = locationdict[Location][1]
