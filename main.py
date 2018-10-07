@@ -23,10 +23,14 @@ import Adafruit_GPIO.SPI as SPI
 # Number of LEDs in strip:
 PIXEL_COUNT = 133
 
-# Currently assigned colour
+# Currently assigned colours
 LEFT_COLOUR = "white"
 MIDDLE_COLOUR = "white"
 BAR_COLOUR = "white"
+
+rval = 255
+bval = 255
+gval = 255
 
 # Specify a hardware SPI connection on /dev/spidev0.0:
 SPI_PORT   = 0
@@ -45,12 +49,11 @@ def single_colour(first, last, r, g, b):
     
 # Get values for dimming
 def dimvalues(lcn, amt):
-      val = int(amt)
+      global rval, gval, bval
       r,g,b = colourdict[lcn][0], colourdict[lcn][2], colourdict[lcn][1]  # take colour values - again accounting for the rbg change
-      rvalue = r*val/100  # adjust by % based on given value 1-100
-      gvalue = g*val/100
-      bvalue = b*val/100
-      return rvalue, gvalue, bvalue
+      rval = r*amt/100  # adjust by % based on given value 1-100
+      gval = g*amt/100
+      bval = b*amt/100
     
 # ================================ #
 #    DICTIONARIES FOR COMMANDS     #
@@ -93,6 +96,7 @@ def launch():
 # amazon intent for changing specific section to a given colour
 @ask.intent('SetColourIntent', default = {'Location':'Living Room'})
 def SetColourIntent(Location, Colour):
+    global LEFT_COLOUR, MIDDLE_COLOUR, BAR_COLOUR
     if Location in locationdict and Colour in colourdict:
       rvalue = colourdict[Colour][0]
       gvalue = colourdict[Colour][2]          # has become RBG for some reason? This fixes
@@ -132,8 +136,8 @@ def ClearIntent(Location):
 # amazon intent for dimming specific lights
 @ask.intent('DimIntent', default = {'Location':'Living Room'})
 def DimIntent(Location, Value):
-    if Location in locationdict and 0 < int(Value) <= 100:
-      rvalue = gvalue = bvalue = 255  # create & reset rgb modifiers
+    Value = int(Value)
+    if Location in locationdict and 0 < Value <= 100:
       if Location == "left":
         firstpixel = locationdict[Location][0]
         lastpixel = locationdict[Location][1]
