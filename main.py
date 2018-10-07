@@ -160,6 +160,7 @@ def DimIntent(Location, Value):
           lastpixel = locationdict[l][1]
           dimvalues(c, Value)
           single_colour(firstpixel, lastpixel, rval, gval, bval)
+      return statement('Adjusting {} lights to {} percent brightness'.format(Location, str(Value)))
     elif Location not in locationdict:
       return statement('I do not know which lights you want changed.')
     else:
