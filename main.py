@@ -28,6 +28,7 @@ LEFT_COLOUR = "white"
 MIDDLE_COLOUR = "white"
 BAR_COLOUR = "white"
 
+# temporary values for adjusting brightness
 rval = 255
 bval = 255
 gval = 255
@@ -139,18 +140,18 @@ def DimIntent(Location, Value):
     Value = int(Value)
     if Location in locationdict and 0 < Value <= 100:
       if Location == "left":
-        firstpixel = locationdict[Location][0]
-        lastpixel = locationdict[Location][1]
+        firstpixel = locationdict["left"][0]
+        lastpixel = locationdict["left"][1]
         dimvalues(LEFT_COLOUR, Value)
         single_colour(firstpixel, lastpixel, rval, gval, bval)
       elif Location == "middle":
-        firstpixel = locationdict[Location][0]
-        lastpixel = locationdict[Location][1]
+        firstpixel = locationdict["middle"][0]
+        lastpixel = locationdict["middle"][1]
         dimvalues(MIDDLE_COLOUR, Value)
         single_colour(firstpixel, lastpixel, rval, gval, bval)
       elif Location == "bar":
-        firstpixel = locationdict[Location][0]
-        lastpixel = locationdict[Location][1]
+        firstpixel = locationdict["bar"][0]
+        lastpixel = locationdict["bar"][1]
         dimvalues(BAR_COLOUR, Value)
         single_colour(firstpixel, lastpixel, rval, gval, bval)
       else:
