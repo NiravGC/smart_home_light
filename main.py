@@ -149,9 +149,9 @@ def DimIntent(Location, Value):
         single_colour(firstpixel, lastpixel, rvalue, gvalue, bvalue)
       else:
         for l, c in zip(("left", "middle", "bar"), (LEFT_COLOUR, MIDDLE_COLOUR, BAR_COLOUR)):
-          firstpixel = locationdict[Location][0]
-          lastpixel = locationdict[Location][1]
-          dimvalues(BAR_COLOUR, Value)
+          firstpixel = locationdict[l][0]
+          lastpixel = locationdict[l][1]
+          dimvalues(c, Value)
           single_colour(firstpixel, lastpixel, rvalue, gvalue, bvalue)
     elif Location not in locationdict:
       return statement('I do not know which lights you want changed.')
