@@ -43,6 +43,13 @@ def single_colour(first, last, r, g, b):
     pixels.set_pixel_rgb(i, r, g, b)
     pixels.show()                       # show to update pixels
     
+# Get values for dimming
+def dimvalues(lcn, amt):
+      r,g,b = colourdict[lcn][0], colourdict[lcn][2], colourdict[lcn][1]  # take colour values - again accounting for the rbg change
+      rvalue = r*amt/100  # adjust by % based on given value 1-100
+      gvalue = g*amt/100
+      bvalue = b*amt/100
+      return rvalue, gvalue, bvalue
     
 # ================================ #
 #    DICTIONARIES FOR COMMANDS     #
@@ -81,6 +88,7 @@ def launch():
     speech_text = 'Novello Smart Lighting Online'
     return question(speech_text).reprompt(speech_text).simple_card(speech_text)
 
+  
 # amazon intent for changing specific section to a given colour
 @ask.intent('SetColourIntent', default = {'Location':'Living Room'})
 def SetColourIntent(Location, Colour):
@@ -104,7 +112,9 @@ def SetColourIntent(Location, Colour):
       return statement('I do not know which lights you want changed.')
     else:
       return statement('I do not have that colour saved.')
+
     
+# amazon intent for turning off specific lights
 @ask.intent('ClearIntent', default = {'Location':'Living Room'})
 def ClearIntent(Location):
     if Location in locationdict:
@@ -117,16 +127,38 @@ def ClearIntent(Location):
     else:
       return statement('I do not know which lights you want changed.')
     
+    
+# amazon intent for dimming specific lights
 @ask.intent('DimIntent', default = {'Location':'Living Room'})
 def DimIntent(Location, Value):
-  if Location in locationdict:
-    firstpixel = locationdict[Location][0]
-    lastpixel = locationdict[Location][1]
-    if Location = "left":
-      r,g,b = colourdict[LEFT_COLOUR][0], colourdict[LEFT_COLOUR][2], colourdict[LEFT_COLOUR][1]  # take colour values
-      rvalue = r/2
-      gvalue = g/2
-      bvalue = b/2
+    if Location in locationdict and Value in range(1,101):
+      if Location == "left":
+        firstpixel = locationdict[Location][0]
+        lastpixel = locationdict[Location][1]
+        dimvalues(LEFT_COLOUR, Value)
+        single_colour(firstpixel, lastpixel, rvalue, gvalue, bvalue)
+      elif Location == "middle":
+        firstpixel = locationdict[Location][0]
+        lastpixel = locationdict[Location][1]
+        dimvalues(MIDDLE_COLOUR, Value)
+        single_colour(firstpixel, lastpixel, rvalue, gvalue, bvalue)
+      elif Location == "bar":
+        firstpixel = locationdict[Location][0]
+        lastpixel = locationdict[Location][1]
+        dimvalues(BAR_COLOUR, Value)
+        single_colour(firstpixel, lastpixel, rvalue, gvalue, bvalue)
+      else:
+        for l, c in zip(("left", "middle", "bar"), (LEFT_COLOUR, MIDDLE_COLOUR, BAR_COLOUR)):
+          firstpixel = locationdict[Location][0]
+          lastpixel = locationdict[Location][1]
+          dimvalues(BAR_COLOUR, Value)
+          single_colour(firstpixel, lastpixel, rvalue, gvalue, bvalue)
+    elif Location not in locationdict:
+      return statement('I do not know which lights you want changed.')
+    else:
+      return statement('Please use a value between zero and one-hundred')
+    
+      
 
 @ask.intent('AMAZON.HelpIntent')
 def help():
