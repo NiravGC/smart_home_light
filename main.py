@@ -142,23 +142,23 @@ def DimIntent(Location, Value):
         firstpixel = locationdict[Location][0]
         lastpixel = locationdict[Location][1]
         dimvalues(LEFT_COLOUR, Value)
-        single_colour(firstpixel, lastpixel, rvalue, gvalue, bvalue)
+        single_colour(firstpixel, lastpixel, rval, gval, bval)
       elif Location == "middle":
         firstpixel = locationdict[Location][0]
         lastpixel = locationdict[Location][1]
         dimvalues(MIDDLE_COLOUR, Value)
-        single_colour(firstpixel, lastpixel, rvalue, gvalue, bvalue)
+        single_colour(firstpixel, lastpixel, rval, gval, bval)
       elif Location == "bar":
         firstpixel = locationdict[Location][0]
         lastpixel = locationdict[Location][1]
         dimvalues(BAR_COLOUR, Value)
-        single_colour(firstpixel, lastpixel, rvalue, gvalue, bvalue)
+        single_colour(firstpixel, lastpixel, rval, gval, bval)
       else:
         for l, c in zip(("left", "middle", "bar"), (LEFT_COLOUR, MIDDLE_COLOUR, BAR_COLOUR)):
           firstpixel = locationdict[l][0]
           lastpixel = locationdict[l][1]
           dimvalues(c, Value)
-          single_colour(firstpixel, lastpixel, rvalue, gvalue, bvalue)
+          single_colour(firstpixel, lastpixel, rval, gval, bval)
     elif Location not in locationdict:
       return statement('I do not know which lights you want changed.')
     else:
