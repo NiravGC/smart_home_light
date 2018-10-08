@@ -170,7 +170,7 @@ def DimIntent(Location, Value):
 
 @ask.intent('AMAZON.HelpIntent')
 def help():
-    speech_text = 'You can say hello to me!'
+    speech_text = 'You can ask me to turn on, turn off, or dim, any of the living room lights.'
     return question(speech_text).reprompt(speech_text).simple_card('HelloWorld', speech_text)
 
 @ask.session_ended
