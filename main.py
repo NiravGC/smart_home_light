@@ -46,7 +46,7 @@ pixels = Adafruit_WS2801.WS2801Pixels(PIXEL_COUNT, spi=SPI.SpiDev(SPI_PORT, SPI_
 def single_colour(first, last, r, g, b):
   for i in range(first, last):          # defined start and end pixels to change
     pixels.set_pixel_rgb(i, r, g, b)
-    pixels.show()                       # show to update pixels
+  pixels.show()                         # show to update pixels
     
 # Get values for dimming
 def dimvalues(lcn, amt):
@@ -81,6 +81,8 @@ colourdict = {
   "purple": [150, 0, 255],
   "pink": [255, 0, 255],
   "white": [255, 255, 255],
+  "lime": [255, 150, 0],
+  "maroon": [200, 0, 90]
 }
 
 
